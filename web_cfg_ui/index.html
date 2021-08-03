@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=windows-1251">
+		<link rel="stylesheet" href="/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>IOMOIO - Lesson 2 </title>
+		<script type="text/javascript">
+		</script>
+	</head>
+	<body>
+	  <div class="container">
+	   <div class="row" style="text-align:center;">
+		<h1 style="margin:50px;">Настройки</h1>
+		<div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+		 <hr>
+		 <h2>Имя устройства</h2>
+		 <input id="ssdp" value="{{SSDP}}" class="form-control" pattern="[0-9a-zA-Zа-яА-Я. ]{1,20}" placeholder="Имя устройства">
+		 <hr>
+		 <h2>Подключение к WiFi роутеру</h2>
+		 <input id="ssid" value="{{ssid}}" class="form-control" pattern="[0-9a-zA-Z.]{1,15}" placeholder="Имя WiFi сети">
+		 <input id="password" value="{{password}}" pattern=".{8,15}" onfocus="this.type='text'" type="password" class="form-control" placeholder="Пароль">
+		 <hr>
+		 <h2>MQTT Брокер</h2>
+		 <div class="row">
+		  <div class="col-sm-6">
+		   <input id="mqtt_ip" value="{{mqtt_ip}}" class="form-control" pattern="[0-9a-zA-Z.]{1,15}" placeholder="Имя WiFi сети">
+		  </div>
+		  <div class="col-sm-6">
+		   <div class="alert alert-dismissible alert-warning">MQTT Brocker URL/IP.</div>
+		  </div>
+		 </div>
+		 <div class="row" >
+		  <div class="col-sm-6">
+		   <input id="mqtt_pswd" value="{{mqtt_pswd}}" class="form-control" pattern=".{8,15}" onfocus="this.type='text'" type="password" class="form-control" placeholder="Пароль">
+		  </div>
+		  <div class="col-sm-6">
+		   <div class="alert alert-dismissible alert-warning">MQTT Brocker PSWD.</div>
+		  </div>		   
+		 </div>
+		 <div class="row" >
+		  <div class="col-sm-6"> 
+		   <input id="mqtt_port" value="1883" class="form-control" pattern="[0-9.]{1,5}" placeholder="Порт MQQT брокера">		  
+		  </div> 
+		  <div class="col-sm-6"> 
+		   <div class="alert alert-dismissible alert-warning">Порт</div>
+		  </div>
+		 </div>
+		 <hr>
+		 <h2>MQTT топик</h2>
+		 <div class="row">
+		  <div class="col-sm-6"> 
+		   <input id="mqtt_topic" value="{{mqtt_topic}}" class="form-control" pattern="[0-9a-zA-Z.]{1,15}" placeholder="Имя WiFi сети">
+		  </div>
+		  <div class="col-sm-6"> 
+		   <div class="alert alert-dismissible alert-warning">MQTT топик</div>
+		  </div>
+		 </div>
+		 <hr>
+		 <h2>Использовать SSL</h2>
+		 <div class="row"> 
+		  <div class="col-sm-6">
+		   <input id="mqtt_ssl" type="checkbox" name="scales">
+		   <label for="mqtt_ssl">SSL</label>
+		  </div>
+		  <div class="col-sm-6"> 
+		   <div class="alert alert-dismissible alert-warning">Включить использование SSL</div>
+		  </div>		  
+		 </div>
+		 <hr>
+		 <h2>Beacon</h2>
+		 <div class="row">
+  		  <div class="col-sm-6">
+		   <input id="iotBeaconTO" value="{{Beacon TimeOut}}" class="form-control" pattern="[0-9a-zA-Z.]{1,15}" placeholder="Beacon timeout в секундах">
+		  </div>
+		  <div class="col-sm-6">
+			<div class="alert alert-dismissible alert-warning">Время в секундах через которое будет отправлено beacon сообщение.</div>
+		  </div>
+		 </div>		  
+		 <hr>
+		 <input id="cfg_save_button" class="btn btn-block btn-warning" value="Сохранить настройки" type="button">
+		</div>
+	   </div>
+	  </div>
+	  <script>
+		var ssdp 		= document.getElementById("ssdp");
+		var ssid 		= document.getElementById("ssid");
+		var pswd 		= document.getElementById("password");
+		var mqtt_ip     = document.getElementById("mqtt_ip");
+		var mqtt_pswd 	= document.getElementById("mqtt_pswd");
+		var beaconTO 	= document.getElementById("iotBeaconTO");
+		var mqtt_topic 	= document.getElementById("mqtt_topic");
+		var mqtt_ssl 	= document.getElementById("mqtt_ssl");
+		var mqtt_port   = document.getElementById("mqtt_port");
+		var svButton 	= document.getElementById("cfg_save_button");
+		function readInitialCfg() {
+			var request = new XMLHttpRequest();
+			request.open('GET','/get_cfg',true);
+			request.onload = function() {
+				if (request.readyState == 4 && request.status == 200) {
+					var jsonResponse=JSON.parse(request.responseText);
+					ssdp.value			= jsonResponse.iotDevName;
+					ssid.value 			= jsonResponse.iotWiFiSsid;
+					pswd.value 			= jsonResponse.iotWiFiKey;
+					mqtt_ip.value 		= jsonResponse.iotBrockerIP;
+					mqtt_pswd.value 	= jsonResponse.iotBrockerKey;
+					mqtt_port.value		= jsonResponse.iotBrockerPort;
+					mqtt_topic.value	= jsonResponse.iotTopic;
+					mqtt_ssl.checked	= jsonResponse.iotSsl;
+					beaconTO.value  	= jsonResponse.iotBeaconTO;
+				}
+			}
+			request.send();
+		}		
+		function save_config(){
+			let strJson = "{\"iotDevName\":\"BELL_BUTTON_0\",\"iotBrockerIP\":\"test.mosquitto.org\",\"iotBrockerKey\":\"123456\",\"iotBrockerPort\":1883,\"iotBeaconTO\":15,\"iotWiFiSsid\":\"ART-HIVE\",\"iotWiFiKey\":\"wifiteligent\",\"iotTopic\":\"ArtHive/Bell\",\"iotSsl\":\"false\"}";
+			let cfgJson = JSON.parse(strJson);
+			cfgJson.iotDevName 		= ssdp.value;
+			cfgJson.iotWiFiSsid 	= ssid.value;
+			cfgJson.iotWiFiKey		= pswd.value;
+			cfgJson.iotBrockerIP 	= mqtt_ip.value;
+			cfgJson.iotBrockerKey 	= mqtt_pswd.value;
+			cfgJson.iotSsl	    	= mqtt_ssl.checked;
+			cfgJson.iotTopic		= mqtt_topic.value;
+			cfgJson.iotBrockerPort	= mqtt_port.value;
+			cfgJson.iotBeaconTO 	= Number( beaconTO.value );
+					
+			let request = new XMLHttpRequest();
+			request.open('POST','/save_cfg',true);
+			request.send(JSON.stringify(cfgJson));
+			if (request.readyState == 4 && request.status == 200) {
+				var response = request.responseText;
+
+			}
+		}
+		document.addEventListener('DOMContentLoaded', readInitialCfg);
+		svButton.addEventListener('click', save_config);
+	  </script>	  
+	</body>
+</html>

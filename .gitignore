@@ -1,0 +1,14 @@
+CubeIDE/
+cubemx/
+doxygen/
+mx/
+vscode/
+uVision5/btmcu/MDK-ARM/v03/
+uVision5/btmcu/MDK-ARM/DebugConfig/
+uVision5/btmcu/MDK-ARM/RTE/
+uVision5/btmcu/MDK-ARM/*.scvd
+uVision5/btmcu/MDK-ARM/*.lst
+uVision5/btmcu/MDK-ARM/*.uvoptx
+uVision5/btmcu/MDK-ARM/*.art_m
+uVision5/btmcu/.vscode/
+uVision5/btmcu/.mxproject
