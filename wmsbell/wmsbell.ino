@@ -1,6 +1,9 @@
-// Скетч из курса по разработке WEB-интерфейсов для IoT: https://www.youtube.com/playlist?list=PL51GEtMX3UW0pwLEN64Lopep9nKPPJL1h
-// Обзоры и уроки работы с Arduino и ESP8266 на http://iomoio.ru
-// Присоединяйтесь ВКонтакте: https://im_pub
+// Скетч отправки mqtt сообщения о 
+// - Звонке (код 0x30)
+// - Heart beat/Beacon (код 0x31)
+// - поддержка режима конфигурации (код 0x32)
+// 
+//
 
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>                            // Библиотека для создания Wi-Fi подключения (клиент или точка доступа)
@@ -62,11 +65,6 @@ const char* def_cfg_iotWiFiKey   = "wifiteligent";
 const char* json_iotWiFiKey      = "iotWiFiKey";
 String iotWiFiKey                = def_cfg_iotWiFiKey;
 
-// iotPort
-//const char* def_cfg_iotPort     = "1883";
-//const char* json_iotPort        = "iotPort";
-//String iotPort                  = def_cfg_iotPort;
-
 // iotTopic
 const char* def_cfg_iotTopic     = "ArtHive/Bell";
 const char* json_iotTopic        = "iotTopic";
@@ -77,18 +75,11 @@ const char* def_cfg_iotSsl       = "false";
 const char* json_iotSsl          = "iotSsl";
 String iotSsl                    = def_cfg_iotSsl;
 
-/* PubSubClient part */
-// const char* psc_ssid        = "ART-HIVE";
-//const char* psc_password    = "wifiteligent";
-//const char* psc_mqttServer  = "test.mosquitto.org";
-// const int   psc_mqttPort    = 1883;
-
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 ESP8266WebServer HTTP(80);                          // Определяем объект и порт сервера для работы с HTTP
 FtpServer ftpSrv;                                   // Определяем объект для работы с модулем по FTP (для отладки HTML)
-
 
 char buf[ 3 ];
 
@@ -131,16 +122,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println("]");
-/*
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    digitalWrite(BUILTIN_LED, LOW);   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because
-    // it is active low on the ESP-01)
-  } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
-  }
-*/
 }
 
 void reconnect() {
@@ -156,12 +137,6 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("d[connected]");
-/*      
-      // Once connected, publish an announcement...
-      client.publish("artTopic", "hello world");
-      // ... and resubscribe
-      client.subscribe("inTopic");
-*/
     } else {
       Serial.print("d[failed, rc=");
       Serial.print(client.state());
@@ -172,7 +147,6 @@ void reconnect() {
   }
 }
 
-
 char modeBuf[ 6 ]={ 0, 0, 0, 0, 0, 0 };
 
 void setup() 
@@ -181,7 +155,7 @@ void setup()
 
   SPIFFS.begin();                   // Инициализируем работу с файловой системой                          
 
-  loadConfig();                                                         // Load initial config
+  loadConfig();                     // Load initial config
 
   Serial.print( "b[" );
   Serial.print( iotBeaconTO, DEC );
@@ -202,8 +176,6 @@ void setup()
 
         modeBuf[ 0 ]= chBuf;
 
-     //   Serial.println( modeBuf );
-        
         if(( modeBuf[ 5 ]=='b' )
           &&( modeBuf[ 4 ]=='[' )
           &&( modeBuf[ 0 ]==']'))
@@ -225,35 +197,15 @@ void setup()
         Serial.println("\nd[readBytes[0]]");      
       }
     }
-/*   
-    if( bfSize>= sizeof( buf ))
+    if(( modeBuf[ 5 ]=='b' )
+      &&( modeBuf[ 4 ]=='[' )
+      &&( modeBuf[ 0 ]==']'))
     {
-      if( Serial.readBytes((byte*)&buf, sizeof(buf)))
-      {
-        Serial.print("]\nd[command from master[0x");
-        Serial.print(buf[ 0 ], HEX);
-        Serial.println("]]");
-        Serial.print("d[battery[");
-        Serial.print(buf[1]);
-        Serial.print(buf[2]);
-        Serial.print("]");
-        
-        break;
-      }else
-        Serial.println("\nd[readBytes[0]]");
+      break;
     }else{
-      Serial.print(".");
+      Serial.print(".");    
+      delay( 200 );
     }
-*/  
-      if(( modeBuf[ 5 ]=='b' )
-        &&( modeBuf[ 4 ]=='[' )
-        &&( modeBuf[ 0 ]==']'))
-      {
-        break;
-      }else{
-        Serial.print(".");    
-        delay( 200 );
-      }
   }
 
   Serial.println( "]" );
@@ -329,19 +281,6 @@ void loop()
         reconnect();
       }
       client.loop();
-/* 
-      unsigned long now = millis();
-      if( now - lastMsg > 2000 )
-      {
-        lastMsg = now;
-        ++value;
-        snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
-        Serial.print("Publish message: ");
-        Serial.println(msg);
-        client.publish("artTopic", msg);
-      }
-*/     
-/* */
 
       if( pubs_number )
       {
@@ -358,12 +297,10 @@ void loop()
         Serial.print( "d[" );
         Serial.print( msg );
         Serial.println( "]" );
-        client.publish("artTopic", msg);
+        client.publish( iotTopic.c_str(), msg );
         Serial.println( "b[Ok]" );
-        
         pubs_number--; // Decrease number of publications
       }
-      
       return;
   }
   else if( buf[ 0 ]== opModeCfg )
