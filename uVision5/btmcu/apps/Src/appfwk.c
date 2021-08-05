@@ -17,13 +17,6 @@
        
     Key Pressing Application detector (KPA) - 
               KPA is built into FWK.  
-              
-    System Time -
-              is used to roughly calculale time gaps. Roughly means that clock freq
-              does not have enougth precision against RTC with crystal oscilator              
-    
-              fwkSystemTime keeps time 
-               
     
     @endverbatim
     
@@ -77,7 +70,7 @@ pfnAppEventHandler const pEvAppInitHandlersList[]       ={ appBtFsmEvHandler, 0 
 /*! Adc scan event to detect key pressed application handlers list */
 pfnAppEventHandler const pEvAppAdcKbPresedHandlersList[]= { appBtFsmEvHandler, 0 };
 
-/*! Sytem Ticks application handlers list */
+/*! System Ticks application handlers list */
 pfnAppEventHandler const pEvSysTickHandlersList[]       = { appBtFsmEvHandler, 0 };
 
 /*! UART Rx application handlers list */
@@ -204,7 +197,7 @@ uint8_t fwkLedsProcessing(_tEQ* p)
  * \fn     void fwkSendEventToAppDirectly( uint8_t appId, _tEQ* pEv )
  * \brief  Sends an Event to appropriate Appl. It uses to send commands directly
  *         between Applications
- * \param  uitn8 aapID Application number in event handlers list
+ * \param  aapID Application number in event handlers list
  * \param  _tEQ* pEv An Event to send
  * \return None
  */
@@ -225,7 +218,7 @@ void fwkSendEventToAppDirectly( uint8_t appId, _tEQ* pEv )
 
 /**
  * \fn     void fwkAppInit(void)
- * \brief  Intialize registered apllications before Events handling launch 
+ * \brief  Initialize registered applications before Events handling launch 
  * \param  None
  * \return None
  */
@@ -243,7 +236,7 @@ void fwkAppInit(void)
 
 /**
  * \fn     void fwkAppEventLoop(_tEQ* pE)
- * \brief  Poxies &pE event to registered Application Handlers 
+ * \brief  Delivers &pE event to registered Application Handlers 
  * \param  pE pointer to an Application Message 
  * \return None
  */
@@ -277,19 +270,19 @@ void fwkAppEventLoop(_tEQ* pE)
 void fwkMain(uint8_t blDoContinuesLoop)
 {
     _tEQ eqR;
-    uint8_t blQeueNotEmpty;
+    uint8_t blQueueNotEmpty;
 
     do
     {
-        blQeueNotEmpty = eqGetEvent(&eqR);
-        if (blQeueNotEmpty != 0 )
+        blQueueNotEmpty = eqGetEvent(&eqR);
+        if (blQueueNotEmpty != 0 )
             fwkAppEventLoop(&eqR);
         else
         { 
             eqR.eId = EV_APP_IDLE;
             eqR.reserved = 0;
         }
-    } while( blDoContinuesLoop || blQeueNotEmpty );
+    } while( blDoContinuesLoop || blQueueNotEmpty );
 }
 
 /* ------------------------------------------------------------------------- 

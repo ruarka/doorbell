@@ -15,7 +15,7 @@
 /*! \def     EQ_BUFF_SIZE
     \brief   It is defines the size of system events queue in event objects.
     
-    It is assumed that an app will never reach a mqueue size. In correctly built system messages 
+    It is assumed that an app will never reach a queue size. In correctly built system messages 
     placed in the queue should be read quicker then they are come into. 
 */
 //#define EQ_BUFF_SIZE  32 

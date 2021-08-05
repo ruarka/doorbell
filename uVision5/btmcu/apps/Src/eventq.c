@@ -1,11 +1,9 @@
-/*! \file      eventq.c
-    \version
-    \date      2017-05-30 22:25
-    \brief     <A Documented file.>
-    \details   <Details.>
-    \bug
-    \copyright
-    \author
+/*! @file      eventq.c
+    @date      2017-05-30 22:25
+    @brief     It is my message queue 
+    @details   
+    @bug
+    @author     ruarka
 */
 
 /* ------------------------------------------------------------------------------------------------
@@ -30,10 +28,21 @@
  *                                 Global Variables
  * ------------------------------------------------------------------------------------------------
  */
-
+/** 
+ * ring buffer of message queue
+ */ 
 _tEQ eqBuff[ EQ_BUFF_SIZE ];
+/**
+ * reading index of buffer
+ */
 uint16_t rdIdx;
+/**
+ * writing index of buffer
+ */
 uint16_t wrIdx;
+/**
+ * the number of message in queue
+ */
 uint16_t eqNumber;
 
 /* ------------------------------------------------------------------------------------------------
@@ -48,10 +57,10 @@ uint16_t eqNumber;
 
 
 /**
-  * \fn     void eqReset(void)
-  * \brief  
-  * \param  
-  * \return
+  * @fn     void eqReset(void)
+  * @brief  
+  * @param  
+  * @return
 */
 void eqReset(void)
 {
@@ -68,10 +77,10 @@ void eqReset(void)
 
 
 /**
- * \fn     bool eqGetEvent(_tEQ* p)
- * \brief
- * \param
- * \return 
+ * @fn     bool eqGetEvent(_tEQ* p)
+ * @brief
+ * @param
+ * @return 
  */
 uint8_t eqGetEvent(_tEQ* p)
 {
@@ -101,10 +110,9 @@ uint8_t eqGetEvent(_tEQ* p)
 }
 
 /**
- * \fn       bool eqAddEvent(_tEQ* p )
- * \brief    Adds Event messege into Event Queue
- * \param    _tEQ* p Pointer to Event Structure 
- * \return   0x01 in case of success Event registration
+ * @brief    Adds Event message into Event Queue
+ * @param    p Pointer to Event Structure 
+ * @return   0x01 in case of success Event registration
  */
 uint8_t eqAddEvent(_tEQ* p)
 {
@@ -134,10 +142,10 @@ uint8_t eqAddEvent(_tEQ* p)
 }
 
 /**
- * \fn       bool eqAddEventFromIt(_tEQ* p )
- * \brief    Adds Event messege into Event Queue from interrupt. Interrupts disabling not needed.
- * \param    _tEQ* p Pointer to Event Structure 
- * \return   Hangon if queue is full
+ * @brief    Adds Event message into Event Queue from interrupt. Interrupts disabling not needed.
+ * @note     Hang on if queue is full
+ * @param    p Pointer to Event Structure 
+ * @return   Nothing
  */
 void eqAddEventFromIt(_tEQ* p)
 {
@@ -153,10 +161,9 @@ void eqAddEventFromIt(_tEQ* p)
 }
 
 /**
- * \fn     uint16_t eqGetBufferSize(void)
- * \brief
- * \param
- * \return
+ * @brief Defined queue buffer size 
+ * @param None
+ * @return Queue buffer size 
  */
 uint16_t eqGetBufferSize(void)
 {
@@ -164,10 +171,9 @@ uint16_t eqGetBufferSize(void)
 }
 
 /**
- * \fn     uint16_t eqGetNumbers(void)
- * \brief
- * \param
- * \return 
+ * @brief Actual number of messages in queue 
+ * @param None
+ * @return number of messages in queue   
  */
 uint16_t eqGetNumbers(void)
 {

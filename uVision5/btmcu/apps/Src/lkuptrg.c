@@ -17,14 +17,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "apptypes.h"
-#include "events.h"
-#include "eventq.h"
-#include "settings.h"
-#include "appfwk.h"
-#include "main.h"
-#include "appbtfms.h"
-
 #include "lkuptrg.h"
 
 /* ------------------------------------------------------------------------------------------------
