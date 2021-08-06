@@ -1,11 +1,12 @@
 /*! @file      eventq.c
-    @date      2017-05-30 22:25
-    @brief     It is my message queue 
-    @details   
-    @bug
-    @author     ruarka
+    @version   0.1
+    @date      2021-08-05 
+    @brief     It is my message queue
+    \details   
+    \bug       
+    \copyright  
+    \author    ruarka
 */
-
 /* ------------------------------------------------------------------------------------------------
 *                                 Includes
 * ------------------------------------------------------------------------------------------------
@@ -57,10 +58,9 @@ uint16_t eqNumber;
 
 
 /**
-  * @fn     void eqReset(void)
-  * @brief  
-  * @param  
-  * @return
+  * @brief  Resets queue
+  * @param  None
+  * @return None
 */
 void eqReset(void)
 {
@@ -75,12 +75,11 @@ void eqReset(void)
 #endif
 }
 
-
 /**
- * @fn     bool eqGetEvent(_tEQ* p)
- * @brief
- * @param
- * @return 
+ * @brief   gets event from queue
+ * @param p pointer to event struct to place event
+ * @retval  0x01 event was returned in p
+ * @retval  0x00 no event - queue is empty
  */
 uint8_t eqGetEvent(_tEQ* p)
 {
@@ -112,7 +111,8 @@ uint8_t eqGetEvent(_tEQ* p)
 /**
  * @brief    Adds Event message into Event Queue
  * @param    p Pointer to Event Structure 
- * @return   0x01 in case of success Event registration
+ * @retval   0x01 in case of success Event registration
+ * @retval   0x00 if queue is full
  */
 uint8_t eqAddEvent(_tEQ* p)
 {

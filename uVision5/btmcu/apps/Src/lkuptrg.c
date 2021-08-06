@@ -2,11 +2,33 @@
     \version   0.1
     \date      2021-08-02 18:25
     \brief     
-    \copyright  
     \author    ruarka
-		\details  
-	
-		\bug
+    \details   
+
+  @verbatim
+  0xfc - miss chars until the next met
+  0xfd - miss one char
+  0xfe - place one char into result buffer
+  0xff - place chars into result buffer until the next char met 
+
+	Triggers
+	CONST_CHAR_FLASH AT_SMS_CMD_ENTER[]= { 0x0d, 0x0a };
+
+	CONST_CHAR_FLASH GPRS_REPLY_RX_SMS[]=
+		{ '+','C','M','T','I',':',' ','"','S','M','"',',',0xff,0x0d,0x0a };
+
+	CONST_CHAR_FLASH READ_SMS_TAG_RESP[]=
+		{ '+','C','M','G','R',':',0xff,0x0d,0x0a };     // Result contains the number of SMS parameters
+
+	CONST_CHAR_FLASH AT_DEL_SMS[]=
+		{ 'A','T','+','C','M','G','D','=' };
+
+	CONST_CHAR_FLASH AT_DEL_SMS_RESP[]=
+		{ 'A','T','+','C','M','G','D','=', 0x0d, 0x0d, 0xff, 0x0d, 0x0a };
+
+	CONST_CHAR_FLASH AT_FIRST_SMS_IDX_FOR_DEL[]= { '1' };   
+
+  @endverbatim  
 */
 
 
@@ -167,11 +189,9 @@ uint8_t sniffByTemplate( uint8_t byte,
 }
 /**
   * @brief  Sets sniffer trigger for templates.  
-  *
   * @param  pTrg  pointer to sniffer trigger. 
   * @param  pRespTmpl pointer to template   
   * @param  rLen Template length
-  * 
   * @retval none
   */
 void triggerSet( struct token_trigger_t* pTrg, const char* pRespTmpl, uint8_t rLen )
@@ -184,9 +204,7 @@ void triggerSet( struct token_trigger_t* pTrg, const char* pRespTmpl, uint8_t rL
 
 /**
   * @brief  Clears sniffer trigger.  
-  *
   * @param  pTrg  pointer to sniffer trigger.   
-  * 
   * @retval none
   */
 void  triggerClear( struct token_trigger_t * pTrg )
