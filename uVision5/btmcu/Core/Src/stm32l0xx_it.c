@@ -25,7 +25,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdint.h>
-#include "apptypes.h"
 #include "events.h"
 #include "eventq.h"
 #include "settings.h"

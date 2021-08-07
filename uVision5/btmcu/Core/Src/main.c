@@ -83,9 +83,6 @@ static void MX_GPIO_Init(void);
 static void MX_ADC_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_RTC_Init(void);
-#ifdef DBG_UART_WEMOS
-#endif
-
 
 /* USER CODE BEGIN PFP */
 

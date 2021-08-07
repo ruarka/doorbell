@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include "globals.h"
 
-#include "apptypes.h"
 #include "events.h"
 #include "eventq.h"
 #include "settings.h"

@@ -6,18 +6,6 @@
     \brief      File contains application layer framework functions.
     
     @verbatim 
-    Sleeping - A Sleeping application is built into FWK. When sleeping condition is reached something
-               like 20 seconds without any activity Sleeping application sends a EV_APP_SLEEP in 
-               fwkSleepSecTicksEvHandler(). After that Sleeping applications waits this event in 
-               fwkSleepSleepEvHandler() and if it comes (so all others APPs are agreed to come to 
-               SLEEP) then initiates sleeping process.
-
-               fwkSleepSleepEvHandler() should be the last in EV_APP_SLEEP handling sequence 
-               pEvAppSleepHandlersList[] to achieve all apps is asked for sleeping.
-       
-    Key Pressing Application detector (KPA) - 
-              KPA is built into FWK.  
-    
     @endverbatim
     
     \bug
@@ -28,8 +16,6 @@
 */
 #include <stdint.h>
 #include "globals.h"
-
-#include "apptypes.h"
 
 #include "hal.h"
 #include "events.h"

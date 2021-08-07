@@ -24,7 +24,6 @@
  */
 #include <stdint.h>
 #include "eventq.h"
-#include "apptypes.h"
 #include "settings.h"
 #include "appbtfms.h"
 #include "appfwk.h"
