@@ -4,19 +4,16 @@
     \brief      An interface between an App layer and Conf layer 
     \bug       
     \copyright  
-    \author    
+    \author    ruarka
 
-    \details    The number of functions provide an access interface to settings
-                for applications. Also it is wrap for conreete hardware implementation for 
-                saving app setings.
-                Setting before using should be read into <setting> structure which kepts actual values.
+    \details   Application profile is placed in memory. 
+               (+) Module provides functionality to save application 
+                   profile into Eeprom.
 
+               (+) Also it retrives data from Eeprom into tSetting structure 
+                   into memory.
 
-  TODO: Add setting interface described through DEFINES
-
-  AOT - Action On Timer
-  AOS - Action on Sensor
-
+               (+) Default data to fill tSetting structure also provided. 
 */
 /* ------------------------------------------------------------------------------------------------
  *                                          Includes
@@ -28,7 +25,6 @@
 #include "appbtfms.h"
 #include "appfwk.h"
 #include "main.h"
-
 
 /* ------------------------------------------------------------------------------------------------
  *                                     Macros
@@ -44,7 +40,7 @@
  *                                 Global Variables
  * ------------------------------------------------------------------------------------------------
  */
-tSettings settings;     /**< Settings profile */
+tSettings settings;     /**< Settings application profile */
 
 uint32_t  uiBeacon            = 15;
 
@@ -60,10 +56,9 @@ uint32_t  uiBeacon            = 15;
 uint32_t calculateCrcEx( uint8_t* pBuff, uint32_t size );
 
 /**
- * \fn     
- * \brief  
- * \param  
- * \return 
+ * \brief  Flush settings from memory into eeprom
+ * \param  None
+ * \return None
  */
 void flushSettings( void )
 {
@@ -72,12 +67,20 @@ void flushSettings( void )
   
   hwkWriteBufferToEeprom( 0,( uint8_t* )&settings, sizeof( tSettings ));
 }
-
+/**
+ * \brief  Flush settings from memory into eeprom
+ * \param  None
+ * \retval Pointer to tSettings structure 
+ */
 tSettings* getSettings( void )
 {
   return &settings;
 }
-
+/**
+ * \brief  Load setting from eeprom into tSettings struct
+ * \param  None
+ * \retval Pointer to tSettings structure 
+ */
 void loadSettings( void )
 {
 	uint32_t tmp;
@@ -92,13 +95,23 @@ void loadSettings( void )
 	
   assing_default_settings();
 }
-
+/**
+ * \brief  Assing default settings to profile placed in memory
+ * \param  None
+ * \retval None 
+ * \note   Data is missed after reset and it is needed to be flushed into Eeprom to keep them.
+ */
 void assing_default_settings( void )
 {
 	settings.secondsToSleep     = TIME_TO_SLEEP_DEF_VAL;
   settings.crc = calculateCrcEx(( uint8_t* )&settings, sizeof( settings )-sizeof( settings.crc ));
 }
-
+/**
+ * \brief  Calculates CRC
+ * \param  pBuff pointer onto tSetting struct in memory
+ * \param  size  of buff
+ * \retval calculated CRC 
+ */
 uint32_t calculateCrcEx( uint8_t* pBuff, uint32_t size )
 {
   uint32_t tmpCRC = 0;
@@ -108,6 +121,3 @@ uint32_t calculateCrcEx( uint8_t* pBuff, uint32_t size )
   
   return tmpCRC;
 }
-  
-
-  
