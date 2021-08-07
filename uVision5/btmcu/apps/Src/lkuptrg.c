@@ -6,12 +6,22 @@
     \details   
 
   @verbatim
+  The module function is to seek incoming stream for condition defined by trigger.
+  Before use sniffByTemplate an appropriate trigger should be assigned.
+  Assigning trigger could be done by triggerSet.
+  If it is needed to clear trigger then call triggerClear.
+
+  Trigger rules 
+  sniffByTemplate looking for chars in trigger pattern for each char consistently until
+  meta symbols (0xfc, 0xfd, 0xfe, 0xff) are met. 
+  
+  For meta symboles sniffByTemplate uses next rules
   0xfc - miss chars until the next met
   0xfd - miss one char
   0xfe - place one char into result buffer
   0xff - place chars into result buffer until the next char met 
 
-	Triggers
+	Triggers Examples
 	CONST_CHAR_FLASH AT_SMS_CMD_ENTER[]= { 0x0d, 0x0a };
 
 	CONST_CHAR_FLASH GPRS_REPLY_RX_SMS[]=
