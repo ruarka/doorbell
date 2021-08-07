@@ -1,5 +1,43 @@
 /* USER CODE BEGIN Header */
 /**
+  @verbatim 
+  Pins assignments for Nucleo 32 (stm32l031)
+  PortA
+  PA0  BUTTON/WKUP1 - Wake UP port
+  PA1  BATTERY      - Battery charge ADC port (CH1)
+  PA4  LED          - Application LED
+  PA6  ESP_RST      - ESP reset control port
+  PA7  ESP_PWR_ON   - ESP power control port
+  PA2  USART2_TX    - Tx Debug&ESP comunication
+  * PA15 USART2_RX    - Rx Debug comunication
+  * PA3  USART2_RX    - Rx ESP comunication  
+  PA13 SWDIO
+  PA14 SWCLK
+  
+  PortB
+  PB3  LD3          - Built in to Nucleo led
+  
+  Pins assignments for STM32l011(TSOP20)
+  
+   
+  Pins assignments for STM32l031(TSOP20)
+  PortA
+  PA0  BUTTON/WKUP1 - Wake UP port
+  PA1  BATTERY      - Battery charge ADC port (CH1)
+  PA4  LED          - Application LED
+  PA6  ESP_RST      - ESP reset control port
+  PA7  ESP_PWR_ON   - ESP power control port
+  PA2  USART2_TX    - Tx Debug&ESP comunication
+  PA3  USART2_RX    - Rx ESP comunication  
+  PA13 SWDIO
+  PA14 SWCLK
+   
+  PortB
+  PB3  LD3          - Built in to Nucleo led  
+  
+  @endverbatim   
+*/
+/**
   ******************************************************************************
   * @file           : main.c
   * @brief          : Main program body
@@ -15,6 +53,8 @@
   *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
+
+
   */
 	
 /* USER CODE END Header */
