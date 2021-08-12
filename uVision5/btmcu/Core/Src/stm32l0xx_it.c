@@ -144,8 +144,8 @@ void SysTick_Handler(void)
     /* Add tick event 25 times per sec */
     eqAddEventFromIt( &eqst );
     
-    //
-    fwkLedsProcessing( 0 );
+    //fwkLedsProcessing( 0 );
+    fwkLedsProcessing();
   } 
   /* USER CODE END SysTick_IRQn 1 */
 }

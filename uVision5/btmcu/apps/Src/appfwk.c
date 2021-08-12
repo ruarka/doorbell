@@ -30,7 +30,7 @@
  *                                 Type definitions
  * ------------------------------------------------------------------------------------------------
  */
-uint8_t fwkLedsProcessing(_tEQ* p);
+// uint8_t fwkLedsProcessing(_tEQ* p);
 
 /* ------------------------------------------------------------------------------------------------
 *                                     Macros
@@ -79,15 +79,18 @@ _tAppEventLink const eventHandlersList[] = {
 // =========================================================================
 // LED Blinking support
 // =========================================================================
+
+  /** @brief LED description struct  
+   */
 typedef struct _LED_Entity
 {
-  uint8_t  ledId;
-  uint8_t  OnNum;
-  uint8_t  OffNum;
-  uint8_t  blPeriodic;
-  uint8_t  OnTicks;
-  uint8_t  OffTicks;
-  uint8_t  OnOffState;
+  uint8_t  ledId;       /**< LED Id used by application       */
+  uint8_t  OnNum;       /**< number of ticks to in ON state   */
+  uint8_t  OffNum;      /**< number of ticks to in OFF state  */
+  uint8_t  blPeriodic;  /**< is it periodic or 1 time blink   */
+  uint8_t  OnTicks;     /**< number of ticks in On period - internally used  */
+  uint8_t  OffTicks;    /**< number of ticks in Off period - internally used */
+  uint8_t  OnOffState;  /**<  On or Off blink state - internally used        */
 } _tLed;
 
 enum {
@@ -96,13 +99,26 @@ enum {
   Block
 };
 
+_tLed LEDS[ APP_LEDS_NUMBER ];    /** LEDs representation objects  */
 
-_tLed LEDS[ APP_LEDS_NUMBER ];
-
-void fwkLedSet( uint8_t uiLedId, uint8_t ontime, uint8_t offTime, uint8_t blPeriodic )
+/**
+ * @brief  Sets the duty cycle for Application LED 
+ * 
+ * @param  uiLedId LED id defined by application
+ * @param  onTime  Number of 1/40 parts of second to LED is ON
+ * @param  offTime Number of 1/40 parts of second to LED is OFF
+ * @param  blPeriodic 0 means 1 time blink duration defined by ontime & offTime
+ *                    others is permanent blinking 
+ * @return None
+ * 
+ * @note Hang on System ticks handler (1000 per sec) divided onto 25. 
+ *       So minimal setting for ontime and offTime is 1/40 second 
+ *       To 0.5 second blinking period ontime(20) and offTime(20).
+ */
+void fwkLedSet( uint8_t uiLedId, uint8_t onTime, uint8_t offTime, uint8_t blPeriodic )
 {
   LEDS[uiLedId].ledId       = uiLedId;
-  LEDS[uiLedId].OnNum       = ontime;
+  LEDS[uiLedId].OnNum       = onTime;
   LEDS[uiLedId].OffNum      = offTime;
   LEDS[uiLedId].blPeriodic  = blPeriodic;
   LEDS[uiLedId].OnTicks     = 1;
@@ -119,22 +135,44 @@ void fwkLedSet( uint8_t uiLedId, uint8_t ontime, uint8_t offTime, uint8_t blPeri
       setLedPinState( uiLedId, 1 );
 }
 
+/**
+ * @brief  Set on the led blink
+ * @param  uiLedId LED id defined by application
+ * @return None
+ */
 void fwkLedOn( uint8_t uiLedId )
 {
   fwkLedSet( uiLedId, 40, 0, 1 );
 }
 
+/**
+ * @brief  Set off the led blink
+ * @param  uiLedId LED id defined by application
+ * @return None
+ */
 void fwkLedOff( uint8_t uiLedId )
 {
   fwkLedSet( uiLedId, 0, 40, 1 );
 }
 
+/**
+ * @brief  sets led blink
+ * @param  uiLedId LED id defined by application
+ * @param  onTime  Number of 1/40 parts of second to LED is ON
+ * @param  offTime Number of 1/40 parts of second to LED is OFF
+ * @return None
+ */
 void fwkLedBlink( uint8_t uiLedId, uint8_t ontime, uint8_t offTime )
 {
   fwkLedSet( uiLedId, ontime, offTime, 1 );
 }
 
-uint8_t fwkLedsProcessing(_tEQ* p)
+/**
+ * @brief  Leds processing fuction which is called in Systicks handler
+ * @param  None
+ * @return None
+ */
+void fwkLedsProcessing( void )
 {
   for(uint8_t i=0; i<APP_LEDS_NUMBER; i++ )
   {
@@ -174,18 +212,16 @@ uint8_t fwkLedsProcessing(_tEQ* p)
           }
       }
   }
-  return 0;
 }
 // =========================================================================
 // Application support functions
 // =========================================================================
 /**
- * \fn     void fwkSendEventToAppDirectly( uint8_t appId, _tEQ* pEv )
- * \brief  Sends an Event to appropriate Appl. It uses to send commands directly
+ * @brief  Sends an Event to appropriate Appl. It uses to send commands directly
  *         between Applications
- * \param  aapID Application number in event handlers list
- * \param  _tEQ* pEv An Event to send
- * \return None
+ * @param  aapID Application number in event handlers list
+ * @param  pEv An Event to send
+ * @return None
  */
 void fwkSendEventToAppDirectly( uint8_t appId, _tEQ* pEv )
 {
@@ -203,10 +239,9 @@ void fwkSendEventToAppDirectly( uint8_t appId, _tEQ* pEv )
 }
 
 /**
- * \fn     void fwkAppInit(void)
- * \brief  Initialize registered applications before Events handling launch 
- * \param  None
- * \return None
+ * @brief  Initialize registered applications before Events handling launch 
+ * @param  None
+ * @return None
  */
 void fwkAppInit(void)
 {
@@ -221,10 +256,9 @@ void fwkAppInit(void)
 }
 
 /**
- * \fn     void fwkAppEventLoop(_tEQ* pE)
- * \brief  Delivers &pE event to registered Application Handlers 
- * \param  pE pointer to an Application Message 
- * \return None
+ * @brief  Delivers &pE event to registered Application Handlers 
+ * @param  pE pointer to an Application Message 
+ * @return None
  */
 void fwkAppEventLoop(_tEQ* pE)
 {
@@ -247,11 +281,12 @@ void fwkAppEventLoop(_tEQ* pE)
 }
 
 /**
- * \fn      void fwkMain(uint8_t blDoContinuesLoop)
- * \brief
- * \param   blDoContinuesLoop - 0x01 continues Event Queue handling without return
+ * @brief  main framework function 
+ * @param   blDoContinuesLoop - 0x01 continues Event Queue handling without return
  *                            - 0x00 one time EQ reading (mostly for tetsting purposes)
- * \return  None.
+ * @return  None.
+ * 
+ * @note fwkMain should be continuesly called in main cycle
  */
 void fwkMain(uint8_t blDoContinuesLoop)
 {

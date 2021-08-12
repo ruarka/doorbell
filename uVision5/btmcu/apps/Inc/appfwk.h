@@ -49,7 +49,7 @@ extern void fwkLedOn( uint8_t uiLedId );
 extern void fwkLedOff( uint8_t uiLedId );
 extern void fwkLedBlink( uint8_t uiLedId, uint8_t ontime, uint8_t offTime );
 
-extern uint8_t fwkLedsProcessing(_tEQ* p);
+extern void fwkLedsProcessing(void);
 
 
 #ifdef __cplusplus
