@@ -1,7 +1,7 @@
 /*! \file      globals.h
     \version   0.1
     \date      2018-04-16 17:54
-    \brief     <A Documented file.>
+    \brief     Contains global variables and definitions for project 
     \details   <Details.>
     \bug       
     \copyright  
