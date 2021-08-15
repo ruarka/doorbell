@@ -10,7 +10,7 @@
                (+) Module provides functionality to save application 
                    profile into Eeprom.
 
-               (+) Also it retrives data from Eeprom into tSetting structure 
+               (+) Also it reass data from Eeprom into tSetting structure 
                    into memory.
 
                (+) Default data to fill tSetting structure also provided. 
@@ -42,7 +42,8 @@
  */
 tSettings settings;     /**< Settings application profile */
 
-uint32_t  uiBeacon            = 15;
+uint32_t  uiBeacon = 15;     /**< beacon value to be loaded into it. 
+                                  15 means seconds after leaving config mode */
 
 /* ------------------------------------------------------------------------------------------------
  *                                 Local Variables

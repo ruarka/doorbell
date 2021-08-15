@@ -2,10 +2,10 @@
     @version   0.1
     @date      2021-08-05 
     @brief     It is my message queue
-    \details   
-    \bug       
-    \copyright  
-    \author    ruarka
+    @details   
+    @bug       
+    @copyright  
+    @author    ruarka
 */
 /* ------------------------------------------------------------------------------------------------
 *                                 Includes

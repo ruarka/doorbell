@@ -435,16 +435,16 @@ uint32_t blAlarmWasConfigured = 0;
   * @param  hrtc : RTC handle
   * @retval None
   */
-void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
-{
-	blAlarmWasConfigured = 0x00;
-  AlarmNum = 'A';
-}
+// void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
+// {
+// 	blAlarmWasConfigured = 0x00;
+//   AlarmNum = 'A';
+// }
 
-void HAL_RTCEx_AlarmBEventCallback(RTC_HandleTypeDef *hrtc)
-{
-  AlarmNum = 'B';
-}
+// void HAL_RTCEx_AlarmBEventCallback(RTC_HandleTypeDef *hrtc)
+// {
+//   AlarmNum = 'B';
+// }
 
 
 void hwSleepingInitiate(void)
@@ -478,15 +478,15 @@ void hwSleepingInitiate(void)
 
     RTC_AlarmTypeDef sAlarm;
 
-    // uint32_t  uiNextTimeInSeconds = sTime.Hours*3600 
-    //                                +sTime.Minutes*60 
-    //                                +sTime.Seconds
-    //                                +uiBeacon;     
-   
     uint32_t  uiNextTimeInSeconds = sTime.Hours*3600 
                                    +sTime.Minutes*60 
                                    +sTime.Seconds
-                                   +15;      
+                                   +uiBeacon;     
+   
+    // uint32_t  uiNextTimeInSeconds = sTime.Hours*3600 
+    //                                +sTime.Minutes*60 
+    //                                +sTime.Seconds
+    //                                +15;      
 
     sAlarm.AlarmTime.Seconds  = uiNextTimeInSeconds%60;
     uint32_t uiTmp            = uiNextTimeInSeconds/60;

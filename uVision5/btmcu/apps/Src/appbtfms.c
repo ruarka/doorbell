@@ -60,8 +60,8 @@ uint32_t  uiRstTO;
 uint32_t  uiBeaconRecvTO;
 uint32_t  uiMqttWaitRespTO;
 uint32_t  uiErrorTO;
-uint32_t uiModeBeforeEnteringState;
-uint32_t uiBellMode = 0;
+uint32_t  uiModeBeforeEnteringState;
+uint32_t  uiBellMode = 0;
 
 /* ------------------------------------------------------------------------------------------------
  *                                          Functions
@@ -278,14 +278,16 @@ static uint8_t  btfsmBeaconWaitStateEH(_tEQ* p )
         trg.pResult[ trg.resultLen ]= 0;
 				DBGT(LOG_DEBUG, "\nFSM:beacon[%s]", trg.pResult);
 				
+        uiBeacon = my_atoi(( char* )trg.pResult, trg.resultLen );
+        if(( uiBeacon < 5 )&&( uiBeacon > 86400 ))
+          uiBeacon = 20; 
+
 				setBtFsmAppState( BT_MODE_SEND_WAIT_MQTT_RES );
-        uiBeacon = 20;  
-      }else{
+       }else{
         /* code */
         HAL_UART_Receive_IT (&huart2, pUartRxBuff, 1);
       }
 		}   
-//    case EV_APP_SLEEP:
     case EV_ADC_SCAN:
     default:
       return 0;
@@ -481,7 +483,8 @@ static uint8_t setBtFsmAppState( uint32_t newState )
 
         Pa0PinVal = HAL_GPIO_ReadPin( WU_GPIO_Port, WU_Pin );
 
-        DBGT( LOG_DEBUG, "\nPWRWU[%d] Alarm[%c] WUP[%d]", blPwrWuFlag, AlarmNum, Pa0PinVal );
+//        DBGT( LOG_DEBUG, "\nPWRWU[%d] Alarm[%c] WUP[%d]", blPwrWuFlag, AlarmNum, Pa0PinVal );
+        DBGT( LOG_DEBUG, "\nPWRWU[%d] WUP[%d]", blPwrWuFlag, Pa0PinVal );
 
         if( uiBellMode == 0 )
         {

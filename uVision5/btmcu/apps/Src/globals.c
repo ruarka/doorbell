@@ -46,23 +46,8 @@ const char* const weekDayStrs[] =
   "Sn"
 };
 
-/** Stirng Buffer for display */
-char pDisplayStrBuff[ 17 ];
-
-/** Int into HEX conversion support variable */
-const char pIntToHex[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
-
-/** English to Russian week days indexes translation */
-const uint8_t weekdayRu[] = { 7, 1, 2, 3, 4, 5, 6 };
-
-/** Time format string used for Debug purposes */
-const char pTimeFormatStr[]="\n0 00:00:00 ";
-
 /** Uart incoming buffer. Actually 1 byte is used */
 uint8_t pUartRxBuff[ 2 ];
-
-/* */
-char AlarmNum = 'N';
 
 /* */
 uint8_t blPwrWuFlag;
@@ -71,11 +56,9 @@ uint8_t blPwrWuFlag;
 uint8_t Pa0PinVal;
 
 /**
- * \fn     uint32_t mapDigitalValue( uint32_t val, uint32_t biggestVal, uint32_t lowestVal, uint32_t scalePoints )
-
- * \brief
- * \param
- * \return
+ * @brief
+ * @param
+ * @return
  */
 uint32_t mapDigitalValue( uint32_t val, uint32_t biggestVal, uint32_t lowestVal, uint32_t scalePoints )
 {
@@ -91,7 +74,16 @@ uint32_t mapDigitalValue( uint32_t val, uint32_t biggestVal, uint32_t lowestVal,
 
   return normalizedVal;
 }
-
+/**
+ * @brief
+ * @param text pointer to text buffer contains text representation of number
+ * @param Len  length of text in text buffer
+ * @retval digital uint value converted text
+ * 
+ * @note no validation of text is performed
+ * 
+ * @note converts only positive values 
+ */
 int my_atoi( char* text, int len )
 {
 	int sum = 0;
@@ -102,15 +94,15 @@ int my_atoi( char* text, int len )
 			case 0:
 				break;
 
-			case 1: sum += multiplier; break;
-			case 2: sum += 2*multiplier; break;
-			case 3: sum += 3*multiplier; break;
-			case 4: sum += 4*multiplier; break;
-			case 5: sum += 5*multiplier; break;
-			case 6: sum += 6*multiplier; break;
-			case 7: sum += 7*multiplier; break;
-			case 8: sum += 8*multiplier; break;
-			case 9: sum += 9*multiplier; break;
+			case '1': sum += multiplier; break;
+			case '2': sum += 2*multiplier; break;
+			case '3': sum += 3*multiplier; break;
+			case '4': sum += 4*multiplier; break;
+			case '5': sum += 5*multiplier; break;
+			case '6': sum += 6*multiplier; break;
+			case '7': sum += 7*multiplier; break;
+			case '8': sum += 8*multiplier; break;
+			case '9': sum += 9*multiplier; break;
 		}
 		multiplier *= 10;
 	}

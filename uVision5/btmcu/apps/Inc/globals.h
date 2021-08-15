@@ -110,19 +110,11 @@ enum {
  *                                    Functions declarations
  * ------------------------------------------------------------------------------------------------
  */
-extern char AlarmNum;
+// extern char AlarmNum;
 extern uint8_t blPwrWuFlag;
 extern uint8_t Pa0PinVal;
 
 extern uint8_t pUartRxBuff[ 2 ];
-
-extern const char* const weekDayStrs[]; 
-
-extern const uint8_t weekdayRu[];
-
-extern const char pIntToHex[];
-
-extern const char pTimeFormatStr[];
 
 extern void global_logger( int entity_level, const int level, const char * format, ... );
 
