@@ -1,12 +1,12 @@
-/*! \file      globals.c
-    \version   0.1  
-    \date      2018-04-16 17:54
-    \brief     Contents application layer GLOBAL variables and constants
-    \author    ruarka
+/*! @file      globals.c
+    @version   0.1  
+    @date      2018-04-16 17:54
+    @brief     Contains application layer GLOBAL variables and constants
+    @author    ruarka
 		
-	\bug
+	@bug
 				
-	\details
+	@details
 */
 /* ------------------------------------------------------------------------------------------------
  *                                 Includes
@@ -30,8 +30,8 @@
  *                                 Global Variables
  * ------------------------------------------------------------------------------------------------
  */
-/*! \brief week days acronims 
- *  \details week day number starts from 1. 
+/*! @brief week days acronims 
+ *  @details week day number starts from 1. 
  *           0 fake index
  */
 const char* const weekDayStrs[] =
@@ -46,20 +46,19 @@ const char* const weekDayStrs[] =
   "Sn"
 };
 
-/* Stirng Buffer for display */
+/** Stirng Buffer for display */
 char pDisplayStrBuff[ 17 ];
 
-/*! Int into HEX conversion support variable */
+/** Int into HEX conversion support variable */
 const char pIntToHex[] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
 
-/*! English to Russaian week days indexes translation */
+/** English to Russian week days indexes translation */
 const uint8_t weekdayRu[] = { 7, 1, 2, 3, 4, 5, 6 };
 
-/*! Time format string used for Debug purposes */
+/** Time format string used for Debug purposes */
 const char pTimeFormatStr[]="\n0 00:00:00 ";
 
-
-/*!  */
+/** Uart incoming buffer. Actually 1 byte is used */
 uint8_t pUartRxBuff[ 2 ];
 
 /* */
