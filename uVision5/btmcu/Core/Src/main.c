@@ -431,22 +431,10 @@ static void MX_RTC_Init(void)
 uint32_t blAlarmWasConfigured = 0;
 
 /**
-  * @brief  Alarm callback
-  * @param  hrtc : RTC handle
+  * @brief  Moves cpu into sleep for defined Beacon time
+  * @param  None
   * @retval None
   */
-// void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
-// {
-// 	blAlarmWasConfigured = 0x00;
-//   AlarmNum = 'A';
-// }
-
-// void HAL_RTCEx_AlarmBEventCallback(RTC_HandleTypeDef *hrtc)
-// {
-//   AlarmNum = 'B';
-// }
-
-
 void hwSleepingInitiate(void)
 {
 	if( !blAlarmWasConfigured )
@@ -483,11 +471,6 @@ void hwSleepingInitiate(void)
                                    +sTime.Seconds
                                    +uiBeacon;     
    
-    // uint32_t  uiNextTimeInSeconds = sTime.Hours*3600 
-    //                                +sTime.Minutes*60 
-    //                                +sTime.Seconds
-    //                                +15;      
-
     sAlarm.AlarmTime.Seconds  = uiNextTimeInSeconds%60;
     uint32_t uiTmp            = uiNextTimeInSeconds/60;
     sAlarm.AlarmTime.Minutes  =( uiTmp )%60;
