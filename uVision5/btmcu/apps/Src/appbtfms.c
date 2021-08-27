@@ -182,14 +182,41 @@ static uint8_t btfsmCheckBatteryStateEh(_tEQ* p)
       break;
 
     case EV_ADC_SCAN:
-      if( uiADCSamlesNum++ >= BT_ADC_SAMPLES ){
+      if( uiADCSamlesNum++ > BT_ADC_SAMPLES ){
         // TODO: Calculate a Real percentage value
+        uint16_t vrefint_calibrated = *(uint16_t*)0x1FF80078;         
+        
         uiADCSum /= BT_ADC_SAMPLES;
 
-        DBGT(LOG_DEBUG, "\nd[ADC:%X]", uiADCSum);
+        uint32_t vdda =( 3000 * vrefint_calibrated)/uiADCSum;
 
-        uiBatteryPercentage = 75;
+        DBGT(LOG_DEBUG, "\nd[VDD:%d]", vdda);
 
+        if( vdda >= 2800 )
+          uiBatteryPercentage = 99;
+        else if( vdda < 2000 )
+          uiBatteryPercentage = 0;
+        else if( vdda >= 2700 )
+          uiBatteryPercentage = 90;
+        else if( vdda >= 2600 )
+          uiBatteryPercentage = 80;
+        else if( vdda >= 2500 )
+          uiBatteryPercentage = 70;
+        else if( vdda >= 2400 )
+          uiBatteryPercentage = 60;
+        else if( vdda >= 2300 )
+          uiBatteryPercentage = 50;
+        else if( vdda >= 2200 )
+          uiBatteryPercentage = 40;
+        else if( vdda >= 2100 )
+          uiBatteryPercentage = 30;
+        else
+          uiBatteryPercentage = 20;
+
+        HAL_ADCEx_DisableVREFINT();
+
+				//uiBatteryPercentage = 75;
+				
         setBtFsmAppState( BT_ESP_RESET_LEAVE );
       }else{
         uiADCSum += p->reserved;
@@ -516,6 +543,9 @@ static uint8_t setBtFsmAppState( uint32_t newState )
       uiADCSamlesNum      = 0; 
       uiAdcTO             = 0;
       uiBatteryPercentage = 0;
+
+      HAL_ADCEx_EnableVREFINT();
+
 			startADCConversion();
       break;
 
