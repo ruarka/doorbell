@@ -13,18 +13,15 @@
  * ------------------------------------------------------------------------------------------------
  */
  /* TimeOuts */
-#define ESP_PWRON_STAB_TIME           100   /**< ms Seconds of power stabilization                            */
-#define BT_ADC_WATERING_SAMPLES       10    /**< The number of ADC sampling to understand watering is needed  */
-#define BT_ADC_TO                     1000  /**< ms Seconds TO of ADC sampling                                */
-#define BT_RST_LEAVE_TO               1000   /**< ms Seconds TO wait until RST is OFF                          */
-//#define BT_BEACON_CFG_TO              1000 /**< ms Seconds TO to wait Beacon cfg value                      */
-#define BT_BEACON_CFG_TO              20000 /**< ms Seconds TO to wait Beacon cfg value                       */
-#define BT_MQTT_SEND_TO               20000 /**! ms Seconds wait until TO is reached                          */
-#define BT_ERR_STATE_TO               5000  /**! ms Seconds in error state                                    */  
+#define ESP_PWRON_STAB_TIME           100    /**< ms Seconds of power stabilization                            */
+#define BT_ADC_SAMPLES                10     /**< The number of ADC sampling to understand watering is needed  */
+#define BT_ADC_TO                     1000   /**< ms Seconds TO of ADC sampling                                */
+#define BT_RST_LEAVE_TO               200    /**< ms Seconds TO wait until RST is OFF                          */
+#define BT_BEACON_CFG_TO              20000  /**< ms Seconds TO to wait Beacon cfg value                       */
+#define BT_MQTT_SEND_TO               20000  /**< ms Seconds wait until TO is reached                          */
+#define BT_ERR_STATE_TO               5000   /**< ms Seconds in error state                                    */  
 
 #define ACD_BATTERY_CHNL							ADC_CHANNEL_1   /**< ADC chanel for sensor 1 - overwatering  */
-
-// #define ADC_SAMPLING_TO				10
 
 #define ON                    1
 #define OFF                   0

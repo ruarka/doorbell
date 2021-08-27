@@ -31,10 +31,8 @@
   PA3  USART2_RX    - Rx ESP comunication  
   PA13 SWDIO
   PA14 SWCLK
-   
-  PortB
-  PB3  LD3          - Built in to Nucleo led  
-  
+
+
   @endverbatim   
 */
 /**
@@ -182,6 +180,7 @@ int main(void)
 
 /**
   * @brief System Clock Configuration
+  * @param None
   * @retval None
   */
 void SystemClock_Config(void)
@@ -289,7 +288,12 @@ static void MX_ADC_Init(void)
 
 }
 
-
+/**
+  * @brief Selects ADC chanel to be used for conversion
+  * @param cnl chanel number 
+  * @param OnOff Action 0 - Off, others - On
+  * @retval None
+  */
 void setADCChanel( uint32_t cnl, uint32_t OnOff )
 {
   if( OnOff )
@@ -313,7 +317,13 @@ void setADCChanel( uint32_t cnl, uint32_t OnOff )
     }
   }
 }
-
+/**
+  * @brief Starts one time ASC conversion
+  * @param none
+  * @retval None
+  * 
+  * @note Interrupts mode is used
+  */
 void startADCConversion( void )
 {
   /* Start the conversion process */  
@@ -323,15 +333,26 @@ void startADCConversion( void )
     Error_Handler();
   }  
 }
-
+/**
+  * @brief Stops ADC conversion
+  * @param None
+  * @retval None
+  * 
+  * @note Just wrap fuction to be used if other ASC mode will be implemented
+  */
 void stopADCConversion( void )
 {
 
 }
 
-/* Var for ADC Scan Event */
+/** Var for ADC Scan Event */
 _tEQ eqAdcScan = { EV_ADC_SCAN, 00 };
 
+/**
+  * @brief HAL ADC conversion finished function 
+  * @param hadc1 HAL defined template ADC_HandleTypeDef
+  * @retval None
+  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc1)
 {
 
@@ -428,7 +449,7 @@ static void MX_RTC_Init(void)
   /* USER CODE END RTC_Init 2 */
 }
 
-uint32_t blAlarmWasConfigured = 0;
+// uint32_t blAlarmWasConfigured = 0;
 
 /**
   * @brief  Moves cpu into sleep for defined Beacon time
@@ -437,8 +458,8 @@ uint32_t blAlarmWasConfigured = 0;
   */
 void hwSleepingInitiate(void)
 {
-	if( !blAlarmWasConfigured )
-	{
+//	if( !blAlarmWasConfigured )
+//	{
 		/* The Following Wakeup sequence is highly recommended prior to each Standby mode entry
 			mainly  when using more than one wakeup source this is to not miss any wakeup event.
 			- Disable all used wakeup sources,
@@ -499,7 +520,7 @@ void hwSleepingInitiate(void)
 			Error_Handler(); 
 		}
    
-		blAlarmWasConfigured = 0x01; 	// TODO: It is not really needed - just to debug STANDBY
+//		blAlarmWasConfigured = 0x01; 	// TODO: It is not really needed - just to debug STANDBY
 
 #if 1    
     DBGT( LOG_DEBUG, "MN:SLEEP");
@@ -508,7 +529,7 @@ void hwSleepingInitiate(void)
 		HAL_PWR_EnterSTANDBYMode();
 
 #endif        
-  }
+//  }
 }
 
 // ------------------------- RTC End ---------------------------------------
@@ -576,7 +597,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     HAL_UART_Receive_IT (&huart2, pUartRxBuff, 1);
   }
 }
-
 // ------------------------- UART End ---------------------------------------
 
 // ------------------------- GPIO Begin ---------------------------------------
@@ -639,11 +659,8 @@ static void MX_GPIO_Init(void)
 }
 /**
   * @brief  Provides a low level abstraction for ESP8266 reset GPIO.  
-  *
   * @note   Used by service logic.
-  *
   * @param  OnOff  0 ESP8266 resset is OFF. Others ESP8266 reset is ON.   
-  * 
   * @retval None
   */
 void setEspRstControl( uint8_t OnOff )
@@ -655,11 +672,8 @@ void setEspRstControl( uint8_t OnOff )
 }
 /**
   * @brief  Provides a low level abstraction for ESP8266 Power On GPIO.  
-  *
   * @note   Used by service logic.
-  *
   * @param  OnOff  0 LED not light. Others lidhts the LRD.      
-  * 
   * @retval None
   */
 void setEspPwrControl( uint8_t OnOff )
@@ -672,14 +686,10 @@ void setEspPwrControl( uint8_t OnOff )
 
 /**
   * @brief  Provides a possibility to control application LED separately from app framework.  
-  *
   * @note   Mostly used by application framework.
-  *
   * @param  ledId  Led number used by application framework. 
   *                Could have BLINK_LED and STATE_LED values.
-  * 
   * @param  state specifies the values 0 and 1 to ON ro OFF led device. 
-  *  
   * @retval None
   */
 void setLedControl( uint8_t OnOff )
@@ -693,15 +703,10 @@ void setLedControl( uint8_t OnOff )
 /**
   * @brief  Provides a low level abstraction for LED devices used by framework layer 
   *         and application service logic layer.  
-  *
-  * @note   Mostly used by application framework.
-  *
   * @param  ledId  Led number used by application framework. 
-  *                Could have BLINK_LED and STATE_LED values.
-  * 
   * @param  state specifies the values 0 and 1 to ON ro OFF led device. 
-  *  
   * @retval None
+  * @note   Mostly used by application framework.
   */
 void setLedPinState( uint8_t ledId, uint8_t state )
 {
@@ -734,10 +739,17 @@ void setLedPinState( uint8_t ledId, uint8_t state )
 /* USER CODE BEGIN 4 */
 
 // ------- Eeprom -------------------------------------
-#define EEPROM_START_ADDR 	((uint32_t)0x08080000)    /* Data EEPROM base address */
-#define EEPROM_END_ADDR			((uint32_t)0x080803FF)    /* Data EEPROM end address */
+#define EEPROM_START_ADDR 	((uint32_t)0x08080000)    /** Data EEPROM base address */
+#define EEPROM_END_ADDR			((uint32_t)0x080803FF)    /** Data EEPROM end address */
 
 #ifdef STM32L031xx
+/**
+  * @brief  Writes data from buffer into EEPROM memory (Cortex-M+) 
+  * @param  eeprom_offset EEPROM start addres 
+  * @param  pBuff  Data buffer pointer
+  * @param  size  the number of bytes in buffer
+  * @retval None
+  */
 void hwkWriteBufferToEeprom( uint16_t eeprom_offset, uint8_t* pBuff, uint32_t size )
 {
 	uint32_t adr = EEPROM_START_ADDR +eeprom_offset;
@@ -773,7 +785,13 @@ void hwkWriteBufferToEeprom( uint16_t eeprom_offset, uint8_t* pBuff, uint32_t si
   }
   HAL_FLASHEx_DATAEEPROM_Lock();   
 }
-
+/**
+  * @brief  Reads data from EEPROM into buffer in memory (Cortex-M+) 
+  * @param  eeprom_offset EEPROM start addres 
+  * @param  pBuff  Data buffer pointer
+  * @param  size  the number of bytes in buffer
+  * @retval None
+  */
 void hwkReadBufferFromEeprom( uint16_t eeprom_offset, uint8_t* pBuf, uint32_t size) 
 {
 	uint32_t addr = EEPROM_START_ADDR +eeprom_offset;

@@ -182,9 +182,12 @@ static uint8_t btfsmCheckBatteryStateEh(_tEQ* p)
       break;
 
     case EV_ADC_SCAN:
-      if( uiADCSamlesNum++ >= BT_ADC_WATERING_SAMPLES ){
+      if( uiADCSamlesNum++ >= BT_ADC_SAMPLES ){
         // TODO: Calculate a Real percentage value
-        uiADCSum /= BT_ADC_WATERING_SAMPLES;
+        uiADCSum /= BT_ADC_SAMPLES;
+
+        DBGT(LOG_DEBUG, "\nd[ADC:%X]", uiADCSum);
+
         uiBatteryPercentage = 75;
 
         setBtFsmAppState( BT_ESP_RESET_LEAVE );
